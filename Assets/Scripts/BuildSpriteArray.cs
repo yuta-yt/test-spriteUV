@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace SpriteUVTest.Runtime
+{
+
 public class BuildSpriteArray : MonoBehaviour
 {
-    [SerializeField] Material _mat;
+    [SerializeField] MeshRenderer _renderer;
     [SerializeField] List<Texture2D> _sprites;
 
     void Start()
@@ -20,6 +23,8 @@ public class BuildSpriteArray : MonoBehaviour
 
         array.Apply();
 
-        _mat.SetTexture("_SpriteArray", array);
+        _renderer.material.SetTexture("_SpriteArray", array);
     }
+}
+
 }

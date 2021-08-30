@@ -26,3 +26,7 @@ Desktop.ini
 /Assets/StreamingAssets
 /Assets/Plugins
 /Assets/AVProVideo
+
+# AfterEffects Temp
+/Adobe After Effects Auto-Save
+/SpriteTest.aep Logs

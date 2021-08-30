@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+namespace SpriteUVTest.Runtime
+{
+
 public class SeparateBit : MonoBehaviour
 {
     [SerializeField] Texture _srcTexture;
@@ -34,4 +37,6 @@ public class SeparateBit : MonoBehaviour
         Destroy(rt);
         UnityEditor.AssetDatabase.Refresh();
     }
+}
+
 }
