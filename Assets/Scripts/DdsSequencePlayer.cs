@@ -19,21 +19,25 @@ public sealed class DdsSequencePlayer : MonoBehaviour
     [SerializeField] int _frameRate = 30;
     int _numFrames = int.MaxValue;
 
+    float _duration = 0;
+    public float Duration => _duration;
+
     float _time = 0f;
     public float currentTime
     {
         get => _time;
         set
         {
+            _prevIndexTime = _indexTime;
             _time = value;
 
-            if(_indexTime >= _numFrames)
+            if(_indexTime >= _numFrames - 1)
             {
                 if(_loop)
                     _time = 0;
                 else
                 {
-                    _time = Mathf.Min(value, _numFrames - 1);
+                    _time = Mathf.Min(value, _duration);
                     Pause();
                 }
             }
@@ -50,7 +54,7 @@ public sealed class DdsSequencePlayer : MonoBehaviour
         }
     }
 
-    int _indexTime => Mathf.FloorToInt(_time);
+    int _indexTime => Mathf.FloorToInt(_time * _frameRate);
     int _prevIndexTime = 0;
 
     Texture2D _highTexture;
@@ -79,6 +83,7 @@ public sealed class DdsSequencePlayer : MonoBehaviour
                                 .Where(x => Path.GetExtension(x) == ".ddsasset").ToArray();
 
         _numFrames = _highFrames.Length;
+        _duration = _numFrames / (float)_frameRate;
 
         _targetRenderer.material.SetTexture(_highUVProperty, _highTexture);
         _targetRenderer.material.SetTexture(_lowUVProperty , _lowTexture);
@@ -88,16 +93,16 @@ public sealed class DdsSequencePlayer : MonoBehaviour
     {
         if(IsPlaying) 
         {
-            _prevIndexTime = _indexTime;
-            currentTime += Time.deltaTime * _frameRate * Speed;
-
             if(_prevIndexTime != _indexTime) LoadCurrentFrame();
+
+            _prevIndexTime = _indexTime;
+            currentTime += Time.deltaTime * Speed;
         }
     }
 
     public void Play()
     {
-        if(_indexTime == _numFrames - 1)
+        if(_indexTime >= _numFrames - 1)
             currentTime = 0;
 
         IsPlaying = true;
@@ -112,6 +117,11 @@ public sealed class DdsSequencePlayer : MonoBehaviour
     public void Pause()
     {
         IsPlaying = false;
+    }
+
+    public void Resume()
+    {
+        currentTime = 0;
     }
 
     void LoadCurrentFrame()
