@@ -153,13 +153,13 @@ public sealed class TextureSeparaterWindow : EditorWindow
             }
 #endif
 
-            TextureConverter.NVTTSetting setting = default;
-            setting.quality   = _quality;
-            setting.useCuda   = _useCuda;
-            setting.yFlip     = _yFlip;
-            setting.deleteTmp = _deleteTmp;
-
-            TextureConverter.Process(_srcDirectoryPath, _outDirectoryPath, _nvttPath, setting);
+            TextureConverter.Process(_srcDirectoryPath, _outDirectoryPath, _nvttPath, new TextureConverter.NVTTSetting
+            {
+                quality = _quality,
+                useCuda = _useCuda,
+                yFlip = _yFlip,
+                deleteTmp = _deleteTmp
+            });
         }
 
         EditorGUILayout.Space(2);
