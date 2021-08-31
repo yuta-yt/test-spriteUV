@@ -21,6 +21,8 @@ sealed class DdsSequencePlayerEditor : UnityEditor.Editor
     SerializedProperty _loop;
     SerializedProperty _speed;
 
+    Runtime.DdsSequencePlayer _player;
+
     void OnEnable()
     {
         var finder = new PropertyFinder(serializedObject);
@@ -38,6 +40,8 @@ sealed class DdsSequencePlayerEditor : UnityEditor.Editor
         _playOnAwake = finder["_playOnAwake"];
         _loop = finder["_loop"];
         _speed = finder["_speed"];
+
+        _player = serializedObject.targetObject as Runtime.DdsSequencePlayer;
     }
 
     public override void OnInspectorGUI()
@@ -87,12 +91,22 @@ sealed class DdsSequencePlayerEditor : UnityEditor.Editor
         _size.vector2IntValue = EditorGUILayout.Vector2IntField("Frame Size", _size.vector2IntValue);
         var setSize = EditorGUI.EndChangeCheck();
 
-        // if(setSize)
-        //     _size.vector2IntValue = new Vector2Int(Mathf.ClosestPowerOfTwo(size.x), Mathf.ClosestPowerOfTwo(size.y));
-
         EditorGUILayout.PropertyField(_frameRate, new GUIContent("Frame Rate"));
 
         EditorGUILayout.Space(10);
+
+        if(Application.isPlaying)
+        {
+            if(GUILayout.Button("Load", GUILayout.Width(60)))
+            {
+                _player.OpenSequenceFromDirectory(_highSeqDirectory.stringValue,
+                                                    _lowSeqDirectory.stringValue,
+                                                    _size.vector2IntValue.x,
+                                                    _size.vector2IntValue.y,
+                                                    _frameRate.intValue);
+            }
+            EditorGUILayout.Space(10);
+        }
 
         // Target texture/renderer
         EditorGUILayout.PropertyField(_targetRenderer);

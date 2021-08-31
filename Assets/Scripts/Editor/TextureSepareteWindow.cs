@@ -183,19 +183,18 @@ public sealed class TextureSeparaterWindow : EditorWindow
             rect.y = 0;
             rect.height = EditorGUIUtility.singleLineHeight * 1.5f;
 
-            if(TextureConverter.Count > 0)
+            if(TextureConverter.IsOptProcess)
             {
-                GUI.Label(rect, $"1/3 Proceeding Separate.... {TextureConverter.CompleteCount} / {TextureConverter.Count}");
+                GUI.Label(rect, $"3/3 Proceeding Asset Optimize.... {TextureConverter.CompleteCount} / {TextureConverter.Count}");
             }
             else if(TextureConverter.IsDdsProcess)
             {
                 GUI.Label(rect, $"2/3 Proceeding dds Convert on NVIDIA Texture Tools Exporter.... ");
             }
-            else if(TextureConverter.IsOptProcess)
+            else if(TextureConverter.IsProceeding)
             {
-                GUI.Label(rect, $"3/3 Proceeding Asset Optimize.... {TextureConverter.CompleteCount} / {TextureConverter.Count}");
+                GUI.Label(rect, $"1/3 Proceeding Separate.... {TextureConverter.CompleteCount} / {TextureConverter.Count}");
             }
-
         }
     }
 
